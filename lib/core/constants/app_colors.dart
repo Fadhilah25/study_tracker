@@ -39,6 +39,11 @@ class AppColors {
   // Outline
   static const Color outline = Color(0xFF79747E);
 
+  // NEW: Surface Variant (Material Design 3)
+  // ==================== Surface Variant (P6) ====================
+  // Used for: Filled input backgrounds, subtle surfaces
+  static const Color surfaceVariant = Color(0xFFE7E0EC);
+
   // ==================== Priority Colors (P5) ====================
   // Used for: Task priority badges & indicators
 
@@ -68,6 +73,26 @@ class AppColors {
   /// Overdue - Warning red
   static const Color statusOverdue = Color(0xFFEF4444);
   static const Color statusOverdueLight = Color(0xFFFEE2E2);
+
+  // NEW: Category Colors (P6)
+  // ==================== Category Colors (P6) ====================
+  // Used for: Category chips, visual categorization in task cards
+
+  /// Study category - Blue (academic, learning)
+  static const Color categoryStudy = Color(0xFF3B82F6);
+  static const Color categoryStudyLight = Color(0xFFDBEAFE);
+
+  /// Assignment category - Purple (tasks, homework)
+  static const Color categoryAssignment = Color(0xFF8B5CF6);
+  static const Color categoryAssignmentLight = Color(0xFFEDE9FE);
+
+  /// Project category - Indigo (group work, major tasks)
+  static const Color categoryProject = Color(0xFF6366F1);
+  static const Color categoryProjectLight = Color(0xFFE0E7FF);
+
+  /// Personal category - Pink (personal development, hobbies)
+  static const Color categoryPersonal = Color(0xFFEC4899);
+  static const Color categoryPersonalLight = Color(0xFFFCE7F3);
 
   // ==================== TODO: Additional Colors ====================
   // Will be added progressively in future tutorials:

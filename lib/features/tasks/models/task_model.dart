@@ -6,6 +6,7 @@ class TaskModel {
   final DateTime dueDate;
   final TaskPriority priority;
   final bool isCompleted;
+  final TaskCategory category; // NEW: category field
 
   TaskModel({
     required this.id,
@@ -13,6 +14,7 @@ class TaskModel {
     required this.description,
     required this.dueDate,
     required this.priority,
+    required this.category, // NEW: required in constructor
     this.isCompleted = false,
   });
 
@@ -34,6 +36,7 @@ class TaskModel {
         description: 'Finish calculus homework chapter 5',
         dueDate: now.add(const Duration(days: 2)),
         priority: TaskPriority.high,
+        category: TaskCategory.assignment,
         isCompleted: false,
       ),
       TaskModel(
@@ -42,6 +45,7 @@ class TaskModel {
         description: 'Read about World War II and make notes',
         dueDate: now.add(const Duration(days: 5)),
         priority: TaskPriority.medium,
+        category: TaskCategory.study,
         isCompleted: false,
       ),
       TaskModel(
@@ -50,6 +54,7 @@ class TaskModel {
         description: 'Write lab report for pendulum experiment',
         dueDate: now.subtract(const Duration(days: 1)),
         priority: TaskPriority.high,
+        category: TaskCategory.assignment,
         isCompleted: false,
       ),
       TaskModel(
@@ -58,6 +63,7 @@ class TaskModel {
         description: 'First draft of argumentative essay',
         dueDate: now.add(const Duration(days: 7)),
         priority: TaskPriority.low,
+        category: TaskCategory.project,
         isCompleted: false,
       ),
       TaskModel(
@@ -66,6 +72,7 @@ class TaskModel {
         description: 'Study organic chemistry for quiz',
         dueDate: now.subtract(const Duration(days: 3)),
         priority: TaskPriority.medium,
+        category: TaskCategory.study,
         isCompleted: true,
       ),
     ];
@@ -84,4 +91,12 @@ enum TaskStatus {
   completed,
   pending,
   overdue,
+}
+
+/// Task categories untuk organization
+enum TaskCategory {
+  study,
+  assignment,
+  project,
+  personal,
 }

@@ -30,6 +30,12 @@ class _TaskListScreenState extends State<TaskListScreen> {
         title: const Text(AppStrings.myTasks),
       ),
       body: tasks.isEmpty ? _buildEmptyState() : _buildTaskList(),
+      // NEW: Add FloatingActionButton
+      floatingActionButton: FloatingActionButton(
+        onPressed: _navigateToAddTask,
+        tooltip: AppStrings.addTask,
+        child: const Icon(Icons.add),
+      ),
     );
   }
 
@@ -129,5 +135,10 @@ class _TaskListScreenState extends State<TaskListScreen> {
 
   void _navigateToDetail(TaskModel task) {
     Navigator.pushNamed(context, AppRoutes.taskDetail, arguments: task);
+  }
+
+  // NEW: Navigate to add task screen
+  void _navigateToAddTask() {
+    Navigator.pushNamed(context, AppRoutes.addTask);
   }
 }

@@ -51,6 +51,35 @@ class AppStrings {
       'Are you sure you want to delete this task?';
   static const String taskDeleted = 'Task deleted';
 
+  // ==================== Form Labels (P6) ====================
+  static const String taskTitle = 'Task Title';
+  static const String taskDescription = 'Description';
+  static const String taskDueDate = 'Due Date';
+  static const String taskCategory = 'Category';
+  static const String taskPriority = 'Priority';
+  static const String selectDate = 'Select Date';
+  static const String selectCategory = 'Select Category';
+
+  // ==================== Validation Messages (P6) ====================
+  static const String fieldRequired = 'This field is required';
+  static const String titleMinLength = 'Title must be at least 3 characters';
+  static const String descriptionMinLength = 'Description must be at least 10 characters';
+  static const String selectValidDate = 'Please select a valid date';
+  static const String selectValidCategory = 'Please select a category';
+
+  // ==================== Success Messages (P6) ====================
+  static const String taskCreated = 'Task created successfully';
+  static const String taskUpdated = 'Task updated successfully';
+  static const String draftSaved = 'Draft saved';
+  static const String draftLoaded = 'Draft loaded';
+
+  // NEW: Category Labels (P6)
+  // ==================== Category Labels (P6) ====================
+  static const String categoryStudy = 'Study';
+  static const String categoryAssignment = 'Assignment';
+  static const String categoryProject = 'Project';
+  static const String categoryPersonal = 'Personal';
+
   // ==================== TODO: Additional Strings ====================
   // Will be added progressively in future tutorials:
 

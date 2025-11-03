@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../features/auth/screens/splash_screen.dart';
 import '../features/tasks/screens/task_list_screen.dart';
 import '../features/tasks/screens/task_detail_screen.dart';
+import '../features/tasks/screens/add_task_screen.dart'; // NEW
 import '../features/tasks/models/task_model.dart';
 import 'app_routes.dart';
 
@@ -27,6 +28,11 @@ class RouteGenerator {
         final task = settings.arguments as TaskModel;
         return MaterialPageRoute(
           builder: (_) => TaskDetailScreen(task: task),
+        );
+
+      case AppRoutes.addTask: // NEW: tambahkan case untuk add task
+        return MaterialPageRoute(
+          builder: (_) => const AddTaskScreen(),
         );
 
       // Routes lain akan ditambahkan di sini sesuai kebutuhan
