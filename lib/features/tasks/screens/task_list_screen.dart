@@ -17,6 +17,9 @@ class _TaskListScreenState extends State<TaskListScreen> {
   // Dummy data untuk P5
   late List<TaskModel> tasks;
 
+  // Filter state - null means "All"
+  TaskStatus? _selectedFilter;
+
   @override
   void initState() {
     super.initState();
@@ -27,9 +30,30 @@ class _TaskListScreenState extends State<TaskListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(AppStrings.myTasks),
+        title: const Text(
+          AppStrings.myTasks,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 22,
+          ),
+        ),
+        backgroundColor: AppColors.primary,
+        foregroundColor: Colors.white,
+        elevation: 3,
       ),
-      body: tasks.isEmpty ? _buildEmptyState() : _buildTaskList(),
+      body: Column(
+        children: [
+          // Filter chips section
+          _buildFilterChips(),
+          const SizedBox(height: 8),
+          // Task list
+          Expanded(
+            child: _getFilteredTasks().isEmpty
+                ? _buildEmptyState()
+                : _buildTaskList(),
+          ),
+        ],
+      ),
       // NEW: Add FloatingActionButton
       floatingActionButton: FloatingActionButton(
         onPressed: _navigateToAddTask,
@@ -39,7 +63,101 @@ class _TaskListScreenState extends State<TaskListScreen> {
     );
   }
 
+  /// Get filtered tasks based on selected filter
+  List<TaskModel> _getFilteredTasks() {
+    if (_selectedFilter == null) {
+      return tasks; // "All" filter
+    }
+    return tasks.where((task) => task.status == _selectedFilter).toList();
+  }
+
+  /// Build filter chips for task status filtering
+  Widget _buildFilterChips() {
+    return Container(
+      height: 60,
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      child: ListView(
+        scrollDirection: Axis.horizontal,
+        children: [
+          // "All" filter chip
+          _buildFilterChip(
+            label: 'All',
+            isSelected: _selectedFilter == null,
+            onTap: () => setState(() => _selectedFilter = null),
+            color: AppColors.primary,
+          ),
+          const SizedBox(width: 8),
+
+          // "Pending" filter chip
+          _buildFilterChip(
+            label: AppStrings.statusPending,
+            isSelected: _selectedFilter == TaskStatus.pending,
+            onTap: () => setState(() => _selectedFilter = TaskStatus.pending),
+            color: AppColors.statusPending,
+          ),
+          const SizedBox(width: 8),
+
+          // "Overdue" filter chip
+          _buildFilterChip(
+            label: AppStrings.statusOverdue,
+            isSelected: _selectedFilter == TaskStatus.overdue,
+            onTap: () => setState(() => _selectedFilter = TaskStatus.overdue),
+            color: AppColors.statusOverdue,
+          ),
+          const SizedBox(width: 8),
+
+          // "Completed" filter chip
+          _buildFilterChip(
+            label: AppStrings.statusCompleted,
+            isSelected: _selectedFilter == TaskStatus.completed,
+            onTap: () => setState(() => _selectedFilter = TaskStatus.completed),
+            color: AppColors.statusCompleted,
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// Build individual filter chip with visual indicator
+  Widget _buildFilterChip({
+    required String label,
+    required bool isSelected,
+    required VoidCallback onTap,
+    required Color color,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+        decoration: BoxDecoration(
+          color: isSelected ? color.withOpacity(0.15) : Colors.white,
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(
+            color: isSelected ? color : AppColors.outline.withOpacity(0.3),
+            width: isSelected ? 2 : 1,
+          ),
+        ),
+        child: Text(
+          label,
+          style: TextStyle(
+            color: isSelected ? color : AppColors.onSurface.withOpacity(0.7),
+            fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
+            fontSize: 14,
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget _buildEmptyState() {
+    // Determine empty message based on filter
+    String emptyMessage;
+    if (_selectedFilter == null) {
+      emptyMessage = AppStrings.noTasks;
+    } else {
+      emptyMessage = 'No tasks with "${_getFilterLabel()}" status';
+    }
+
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -51,35 +169,52 @@ class _TaskListScreenState extends State<TaskListScreen> {
           ),
           const SizedBox(height: 16),
           Text(
-            AppStrings.noTasks,
+            emptyMessage,
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
                   color:
                       Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
                 ),
+            textAlign: TextAlign.center,
           ),
         ],
       ),
     );
   }
 
+  /// Get current filter label for empty state message
+  String _getFilterLabel() {
+    switch (_selectedFilter) {
+      case TaskStatus.pending:
+        return AppStrings.statusPending;
+      case TaskStatus.overdue:
+        return AppStrings.statusOverdue;
+      case TaskStatus.completed:
+        return AppStrings.statusCompleted;
+      default:
+        return 'All';
+    }
+  }
+
   Widget _buildTaskList() {
+    final filteredTasks = _getFilteredTasks();
+
     return ListView.builder(
       padding: const EdgeInsets.symmetric(vertical: 8),
-      itemCount: tasks.length,
+      itemCount: filteredTasks.length,
       itemBuilder: (context, index) {
-        final task = tasks[index];
-        return _buildDismissibleTaskCard(task, index);
+        final task = filteredTasks[index];
+        return _buildDismissibleTaskCard(task);
       },
     );
   }
 
-  Widget _buildDismissibleTaskCard(TaskModel task, int index) {
+  Widget _buildDismissibleTaskCard(TaskModel task) {
     return Dismissible(
       key: Key(task.id),
       direction: DismissDirection.endToStart,
       background: _buildDeleteBackground(),
       confirmDismiss: (direction) => _showDeleteConfirmation(task),
-      onDismissed: (direction) => _deleteTask(index),
+      onDismissed: (direction) => _deleteTask(task),
       child: InkWell(
         onTap: () => _navigateToDetail(task),
         borderRadius: BorderRadius.circular(12),
@@ -121,9 +256,9 @@ class _TaskListScreenState extends State<TaskListScreen> {
     );
   }
 
-  void _deleteTask(int index) {
+  void _deleteTask(TaskModel task) {
     setState(() {
-      tasks.removeAt(index);
+      tasks.removeWhere((t) => t.id == task.id);
     });
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(

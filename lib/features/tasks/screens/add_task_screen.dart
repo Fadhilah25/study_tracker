@@ -217,7 +217,8 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                       )
                     : const Text(
                         AppStrings.save,
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.w600),
                       ),
               ),
             ],

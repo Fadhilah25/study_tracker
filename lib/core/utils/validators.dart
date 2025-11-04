@@ -50,7 +50,8 @@ class Validators {
 
   /// Combine multiple validators
   /// Returns first error found, null if all valid
-  static String? combine(String? value, List<String? Function(String?)> validators) {
+  static String? combine(
+      String? value, List<String? Function(String?)> validators) {
     for (final validator in validators) {
       final error = validator(value);
       if (error != null) return error;

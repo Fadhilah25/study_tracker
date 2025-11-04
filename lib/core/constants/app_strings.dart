@@ -63,7 +63,8 @@ class AppStrings {
   // ==================== Validation Messages (P6) ====================
   static const String fieldRequired = 'This field is required';
   static const String titleMinLength = 'Title must be at least 3 characters';
-  static const String descriptionMinLength = 'Description must be at least 10 characters';
+  static const String descriptionMinLength =
+      'Description must be at least 10 characters';
   static const String selectValidDate = 'Please select a valid date';
   static const String selectValidCategory = 'Please select a category';
 
